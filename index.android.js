@@ -16,6 +16,7 @@ class AwesomeProject extends Component {
     return (
       <View style={styles.container}>
         <HelloMessage name='medellinJS' />
+        <Timer />
       </View>
     );
   }
@@ -31,6 +32,29 @@ class HelloMessage extends Component {
   }
 }
 
+class Timer extends Component {
+  constructor() {
+    super();
+    this.state = { secondsElapsed: 0 };
+    this.tick = this.tick.bind(this);
+  }
+  
+  tick () {
+    this.setState({secondsElapsed: this.state.secondsElapsed + 1});
+  }
+  
+  componentDidMount() {
+    this.interval = setInterval(this.tick, 1000);
+  }
+  
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+  
+  render() {
+    return (<Text>Seconds Elapsed: {this.state.secondsElapsed}</Text>)
+  }
+}
 
 
 const styles = StyleSheet.create({
