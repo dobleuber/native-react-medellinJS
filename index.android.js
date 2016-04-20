@@ -8,7 +8,8 @@ import React, {
   Component,
   StyleSheet,
   Text,
-  View
+  View,
+  TextInput
 } from 'react-native';
 
 class AwesomeProject extends Component {
@@ -17,6 +18,7 @@ class AwesomeProject extends Component {
       <View style={styles.container}>
         <HelloMessage name='medellinJS' />
         <Timer />
+        <TodoApp/>
       </View>
     );
   }
@@ -56,6 +58,53 @@ class Timer extends Component {
   }
 }
 
+class TodoList extends Component{
+  render() {
+    var createItem = function(item) {
+      return <Text key={item.id} style={styles.instructions}>{item.text}</Text>;
+    };
+    return <View>{this.props.items.map(createItem)}</View>;
+  }
+}
+
+class TodoApp extends Component {
+  constructor () {
+    super();
+    this.state = {
+      items : [],
+      text:''
+    }
+    
+    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+  
+  onChange(val) {
+    this.setState({text: val});
+  }
+  
+  onClick() {
+    var nextItems = this.state.items.concat([{text:this.state.text, id: Date.now()}]);
+    var nextText = '';
+    this.setState({items: nextItems, text: nextText});
+  }
+  
+  render() {
+    return (
+      <View style={styles.todoList}>
+        <Text>TODO</Text>
+        <TodoList items={this.state.items} />
+        <View>
+          <TextInput
+            onChangeText={this.onChange}
+            value={this.state.text}
+          />
+          <Text onPress={this.onClick} style={styles.button}>Add</Text>
+        </View>  
+      </View>
+    );
+  }
+} 
 
 const styles = StyleSheet.create({
   container: {
@@ -73,6 +122,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  todoList: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#AAAAAA',
+  },
+  button: {
+    textAlign: 'center'
   }
 });
 
